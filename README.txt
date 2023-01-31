@@ -10,6 +10,21 @@ Trang chủ kubernetes
 - Ngoài ra kubernetes còn nhiều tính năng khác như: auto scale resource, auto restart application when failure, zero downtime deployment, automated rollouts and rollbacks application, v...v...
 
 2. Kiến trúc của Kubernetes 
-- ★　Kubernetes cluster (một cụm bao gồm một master và một hoặc nhiều worker) bao gồm 2 thành phần (component) chính:
--    Master nodes (control plane)
--    Worker nodes
+★　Kubernetes cluster (một cụm bao gồm một master và một hoặc nhiều worker) bao gồm 2 thành phần (component) chính:
+  -    Master nodes (control plane)
+  -    Worker nodes
+★　 Master nodes (control plane)：
+  Master node chỉ có nhiệm vụ control state của cluster, nó không có chạy ứng dụng trên đó, ứng dụng của chúng ta sẽ được chạy trên worker node. 
+  Master nodes bao gồm 4 thành phần chính:
+    ●　API server: thành phần chính để giao tiếp với các thành phần khác
+    ●　Controller manager: gồm nhiều controller riêng cụ thể cho từng resource và thực hiện các chứng năng cụ thể cho từng thằng resource trong kube như create pod, create deployment,v.v.
+    ●　Scheduler: schedules ứng dụng tới node nào
+    ●　Etcd: là một database để lưu giữ trạng thái và resource của cluster
+★　 Worker node：
+  Là nơi chạy các ứng dụng
+  Gồm 3 thành phần chính:
+    ●  Container runtime (docker, rkt hoặc nền tảng khác): chạy container
+    ●  Kubelet: giao tiếp với API server và quản lý container trong một worker node
+    ●  Kubernetes Service Proxy (kube-proxy): quản lý network và traffic của các ứng dụng trong woker node
+
+    
