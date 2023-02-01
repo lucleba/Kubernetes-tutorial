@@ -27,4 +27,7 @@ Trang chủ kubernetes
     ●  Kubelet: giao tiếp với API server và quản lý container trong một worker node
     ●  Kubernetes Service Proxy (kube-proxy): quản lý network và traffic của các ứng dụng trong woker node
 
-    
+3. Cài đặt
+
+
+★ Note: Nếu bạn dự định chạy 1 Kubernetes cluster trên laptop (locally), bạn cần phải có 1 tool được cài đặt trước giống như là  Minikube và sau đó re-run the commands kubectl cluster-info.
