@@ -31,3 +31,8 @@ Trang chủ kubernetes
 
 
 ★ Note: Nếu bạn dự định chạy 1 Kubernetes cluster trên laptop (locally), bạn cần phải có 1 tool được cài đặt trước giống như là  Minikube và sau đó re-run the commands kubectl cluster-info.
+★ Nếu lỗi xuất hiện "validate service connection: CRI v1 runtime API is not implemented for endpoint \"unix:///var/run/containerd/containerd.sock\": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService " 
+=> rm /etc/containerd/config.toml
+systemctl restart containerd
+kubeadm init
+
