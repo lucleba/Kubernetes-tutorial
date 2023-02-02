@@ -28,7 +28,12 @@ Trang chủ kubernetes
     ●  Kubernetes Service Proxy (kube-proxy): quản lý network và traffic của các ứng dụng trong woker node
 
 3. Cài đặt
-
+  Bạn phải cài đặt các packages sau đây trên tất cả các node.
+    ●  docker
+    ●  kubelet   : component chạy trên tất cả các máy trong Cluster và thực hiện những việc như khởi động pods và container
+    ●  kubectl   : giao tiếp với cluster
+    ●  kubeadm   : lệnh để khởi động cluster
+    
 
 ★ Note: Nếu bạn dự định chạy 1 Kubernetes cluster trên laptop (locally), bạn cần phải có 1 tool được cài đặt trước giống như là  Minikube và sau đó re-run the commands kubectl cluster-info.
 ★ Nếu lỗi xuất hiện "validate service connection: CRI v1 runtime API is not implemented for endpoint \"unix:///var/run/containerd/containerd.sock\": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService " 
