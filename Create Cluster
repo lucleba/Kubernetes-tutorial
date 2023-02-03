@@ -1,0 +1,63 @@
+Tạo Kubernetes Cluster hoàn chỉnh từ 3 máy (3 VPS - hay 3 Server) chạy CentOS
+Hệ thống này gồm:
+      Tên máy/Hostname	        Thông tin hệ thống	                                                      Vai trò
+      master.xtl	              HĐH CentOS7, Docker CE, Kubernetes. Địa chỉ IP 172.16.10.100	              làm master
+      worker1.xtl	              HĐH CentOS7, Docker CE, Kubernetes. Địa chỉ IP 172.16.10.101	              làm worker
+      worker2.xtl	              HĐH CentOS7, Docker CE, Kubernetes. Địa chỉ IP 172.16.10.102	              làm worker
+    Nếu có máy server rồi thì cài đặt các pakages sau đây trên tất cả các máy
+        docker: xem hướng dẫn ở đây nhé. https://github.com/lucleba/docker-tutorial
+        kubelet.
+        kubectl.
+        kubeadm.
+    Nếu chưa có máy Server thì Hãy tạo máy ảo nhé! :P  tham khảo cách tạo máy ảo ở folder kubernetes-centos7. 
+    
+    
+Sau khi đã có độc lập thì hãy cùng tạo CLuster nào. let's go. 
+
+1. Khởi tạo master.
+  　Node master sẽ có nhiệm vụ quản lý các thành phần, các node, bao gồm etcd và API server để giao tiếp với các node.
+●　Trên server Master ( gọi luôn là node master đi), chạy lệnh sau để khởi tạo master.
+kubeadm init [--apiserver-advertise-address=172.16.10.100] [--pod-network-cidr=192.168.0.0/16]
+  giải thích xíu về lệnh trên nhỉ?
+    kubeadm init  : để khởi tạo master
+    --apiserver-advertise-address <ip-address> : Địa chỉ IP hoặc hostname của API server để các nút khác trong cluster có thể tìm thấy và kết nối tới nó.
+                                                 tự động cài đặt với dải mạng gắn với default gateway. 
+    --pod-network-cidr=192.168.0.0/16  : Địa chỉ IP của mạng pod trong cluster, để các pod có thể kết nối tới nhau và tới API server.
+    
+    đến đoạn này mà gặp lỗi kiểu thế này:
+        [ERROR CRI]: container runtime is not running: output: time="2023-02-03T02:42:36Z" level=fatal msg="validate service connection: CRI v1 runtime API is not implemented for endpoint \"unix:///var/run/containerd/containerd.sock\": rpc error: code = Unimplemented desc = unknown service runtime.v1.RuntimeService"
+        
+     thẳng tay xóa cái dưới đây đi. 
+     rm /etc/containerd/config.toml
+     systemctl restart containerd
+     kubeadm init [--apiserver-advertise-address=172.16.10.100] [--pod-network-cidr=192.168.0.0/16]
+   sau khi chạy thành cồng trên màn hình nó xuất hiện mấy chữ bắt mình làm theo đấy. trên này k gián được ảnh chán ghê!!! khóc :'(
+   
+    To start using your cluster, you need to run the following as a regular user:
+
+=====>      mkdir -p $HOME/.kube
+=====>      sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+=====>      sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+    Alternatively, if you are the root user, you can run:
+
+=====>      export KUBECONFIG=/etc/kubernetes/admin.conf
+
+    You should now deploy a pod network to the cluster.
+=====>    Run "kubectl apply -f [podnetwork].yaml" with one of the options listed at:
+      https://kubernetes.io/docs/concepts/cluster-administration/addons/
+
+    Then you can join any number of worker nodes by running the following on each as root:
+
+    kubeadm join 172.16.10.100:6443 --token xxxxxxxx \
+            --discovery-token-ca-cert-hash sha256:xxxxxxxx
+trên kia nhiều addons lắm, vào đấy tham khảo nhé rồi chọn ra 1 cái để dùng nhá.   
+      vd về kube-flannel:
+          sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
+      vd về calico:
+          kubectl apply -f https://docs.projectcalico.org/v3.10/manifests/calico.yaml
+          kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/tigera-operator.yaml
+          kubectl create -f https://raw.githubusercontent.com/projectcalico/calico/v3.25.0/manifests/custom-resources.yaml
+
+          
+ 
