@@ -1,0 +1,16 @@
+
+kubectl là trình client, nó được sử dụng để kết nối và tương tác với Cluster Kubernetes. Đây là công cụ chính để làm việc với Kubernetes
+
+kubectl version --short
+
+# Lấy thông tin Cluster
+kubectl cluster-info
+
+# Liệt kê các Node có trong Cluster
+kubectl get node
+# Các pod đang chạy trong tất cả các namespace
+kubectl get pods -A
+
+# thông tin chi tiết của 1 node
+kubectl describe node/<node_name>
+
