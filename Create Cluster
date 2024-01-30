@@ -51,6 +51,8 @@ kubeadm init [--apiserver-advertise-address=172.16.10.100] [--pod-network-cidr=1
 
     kubeadm join 172.16.10.100:6443 --token xxxxxxxx \
             --discovery-token-ca-cert-hash sha256:xxxxxxxx
+      để hiện thị được token bên trên nếu không nhớ thì chạy lệnh sau:
+      kubeadm token create --print-join-command
 trên kia nhiều addons lắm, vào đấy tham khảo nhé rồi chọn ra 1 cái để dùng nhá.   
       vd về kube-flannel:
           sudo kubectl apply -f https://raw.githubusercontent.com/coreos/flannel/master/Documentation/kube-flannel.yml
